@@ -7,7 +7,7 @@ const rl = readline.createInterface({
 
 rl.on("close", () => {
     console.log("on close le rl")
-    console.log("Vos réponse", JSON.stringify(question.answers))
+    //console.log("Vos réponse", JSON.stringify(question.answers))
 })
 
 var question = {
@@ -31,6 +31,10 @@ var question = {
             this.askQuestion(this.answers.length)
         })
         
+    }, 
+
+    getAnswers: function getAnswers() {
+        return this.answers
     }
 
 }

@@ -1,4 +1,6 @@
+
 const question = require('./question')
+const fs = require('fs')
 
 var questions = [
     {
@@ -18,4 +20,7 @@ question
 
 process.on("exit", () => {
     console.log("Sortie de %s", __filename)
+    console.log("Réponses ", JSON.stringify(question.getAnswers()))
+
+    fs.appendFileSync("answers.txt", JSON.stringify(question.getAnswers()), "utf-8")
 })

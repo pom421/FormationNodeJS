@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/robot-readline.js",
+            "program": "${workspaceFolder}/http/server.js",
             "args": [
                 "--name", "toto", "--message", "bonjour"
             ]

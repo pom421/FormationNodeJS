@@ -59,6 +59,13 @@ app.get("/ajouterContact", (req, res) => {
    
 })
 
+app.get("/supprimerContact/:login", (req, res) => {
+    
+    session.annuaire = annuaire = annuaire.filter(person => person.login != req.params.login)
+
+    res.render("agenda-liste", { users: annuaire})
+})
+
 app.get("/apropos", (req, res) => {
     res.render("apropos")
 })

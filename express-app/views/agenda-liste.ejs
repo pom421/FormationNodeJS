@@ -14,24 +14,34 @@
         <div style="padding: 20px">
 
             <h1>Liste des contacts</h1>
-            <ul>
+
+            <div class="row">
+
                 <% users.forEach((user) => {  %>
 
-                    <li>
-                        <%= user.login %>
-                            <%= user.nom %>
-                                <%= user.prenom %>
-                                    <%= user.tel %>
-                                        <%= user.image %>
-                    </li>
+                    <div class="col-sm-6" style="margin: 10px">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <%= user.login %>
+                                </h4>
+                                <p class="card-text">
+                                    <%= user.nom %>
+                                        <%= user.prenom %>
+                                </p>
+                                <a href="#" class="btn btn-primary">Détails</a>
+                                <a href="/supprimerContact/<%= user.login %>" class="btn btn-danger">Supprimer</a>
+                            </div>
+                        </div>
+                    </div>
 
                     <% }) %>
-            </ul>
+            </div>
 
             <a href="/ajouterContact">
-                <button type="button" class="btn btn-primary btn-lg btn-block" >Ajouter un contact</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block">Ajouter un contact</button>
             </a>
-            
+
         </div>
 
 </body>

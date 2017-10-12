@@ -1,0 +1,14 @@
+{
+    "production": {
+        "host": "localhost",
+        "user": "rootaaaa",
+        "password": "",
+        "database": "contacts"
+    },
+    "development": {
+        "host": "localhost",
+        "user": "root",
+        "password": "",
+        "database": "contacts"
+    }
+}

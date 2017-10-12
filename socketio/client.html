@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Chat</title>
+</head>
+<body>
+    <div style="padding: 20px">
+        <h1>Salle de Chat</h1>
+        <div id="history" style="width: 600px; height: 400px; overflow: auto; border: 1px solid lightgrey; margin: 10px 0; padding: 1px 3px"></div>
+        <form id="addMessageForm">
+            <input type="text" id="entry">
+            <input type="submit" value="Envoyer" id="button-message">
+        </form>
+        <a id="lienJoin" href="javascript:join()">Se connecter</a>
+        <a id="lienUnjoin" href="javascript:unjoin()">Se déconnecter</a>
+    </div>
+
+    <script>
+        document.getElementById("lienUnjoin").style.visibility = "hidden"
+
+        var server = io.connect("http://localhost:8080")
+
+        function join() {
+            var nickname = prompt("Choisissez votre pseudo")
+            server.emit("join", nickname)
+        }
+
+        function unjoin(){
+            server.emit("unjoin")
+            document.getElementById("lienUnjoin").style.visibility = "hidden"
+            document.getElementById("lienJoin").style.visibility = "visible"
+        }
+
+        server.on("message", message => {
+            console.log("message trouvé ", message)
+            document.getElementById("history").innerHTML += `<br><b>${message.author} : </b>${message.message}`
+        })
+
+        server.on("join", message => {
+            document.getElementById("lienJoin").style.visibility = "hidden"
+            document.getElementById("lienUnjoin").style.visibility = "visible"
+        })
+
+        server.on("erreur", err => {
+            alert(err.message)
+        })
+
+        document.getElementById("addMessageForm").addEventListener("submit", e => {
+            e.preventDefault()
+            const entry = document.getElementById("entry")
+            console.log("Envoi de " + entry.value)
+            server.emit("message", entry.value)
+            entry.value = ""
+        })
+
+    </script>
+</body>
+</html>

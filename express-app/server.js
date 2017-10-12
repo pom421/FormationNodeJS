@@ -5,23 +5,7 @@ const session = require("express-session")
 
 const app = express()
 
-let annuaire = [
-    {
-        login: "pom",
-        nom: "mauguet",
-        prenom: "pierre-olivier"
-    },
-    {
-        login: "joe24",
-        nom: "silver",
-        prenom: "joe"
-    },
-    {
-        login: "coco",
-        nom: "cohen",
-        prenom: "ethan"
-    }
-]
+// CONFIGURATION
 
 app.use(morgan("combined"))
     .use(bodyparser.urlencoded({ extended: false }))
@@ -29,35 +13,54 @@ app.use(morgan("combined"))
     
 app.set("view engine", "ejs")
 
+
+let annuaire = session.annuaire || []
+
+// ROUTES
+
 app.get("/hello", (req, res) => {
     res.send("Hello world")
 })
 
+/*
 app.post("/", (req, res) => {
     console.log("username", req.body.username)
     const html = `Formulaire envoyé (${req.body.date})<br>
         Nom ${req.body.username}`
     res.send(html)
 })
+*/
 
-app.get("/agenda", (req, res) => {
-    res.render("agenda-form.ejs", { users: annuaire })
+app.get("/", (req, res) => {
+    console.log("annuaire", JSON.stringify(annuaire))
+
+    res.render("agenda-liste", { users: annuaire })
 })
 
-app.post("/agenda", (req, res) => {
+app.post("/ajouterContact", (req, res) => {
     const newUser = {
         login: req.body.login,
         nom: req.body.nom,
-        prenom: req.body.prenom
+        prenom: req.body.prenom,
+        tel: req.body.tel,
+        image: req.body.image
     }
     
-    let annuaire = session.annuaire || []
     annuaire.push(newUser)
-    session.annuaire = annuaire
 
     console.log("annuaire", JSON.stringify(annuaire))
 
-    res.render("agenda-form.ejs", { users: annuaire })
+    res.redirect("/")
+})
+
+app.get("/ajouterContact", (req, res) => {
+
+    res.render("agenda-form", { users: annuaire })
+   
+})
+
+app.get("/apropos", (req, res) => {
+    res.render("apropos")
 })
 
 app.listen(8080, () => {

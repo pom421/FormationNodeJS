@@ -10,6 +10,7 @@ const app = express()
 // promesses pour les fonctions en base de données
 const addUser = util.promisify(bd.addUser)
 const allUsers = util.promisify(bd.allUsers)
+const deleteUser = util.promisify(bd.deleteUser)
 
 // CONFIGURATION
 
@@ -23,10 +24,6 @@ app.set("view engine", "ejs")
 let annuaire = session.annuaire || []
 
 // ROUTES
-
-app.get("/hello", (req, res) => {
-    res.send("Hello world")
-})
 
 app.get("/", (req, res) => {
 
@@ -66,11 +63,20 @@ app.get("/ajouterContact", (req, res) => {
    
 })
 
-app.get("/supprimerContact/:login", (req, res) => {
+app.get("/supprimerContact/:id", (req, res) => {
     
-    session.annuaire = annuaire = annuaire.filter(person => person.login != req.params.login)
+    //session.annuaire = annuaire = annuaire.filter(person => person.login != req.params.login)
 
-    res.render("agenda-liste", { users: annuaire})
+    deleteUser(req.params.id)
+        .then(() => { 
+            console.log(`L'utilisateur (id: ${req.params.id}) a été supprimé`)
+        })
+        .catch(err => {
+            console.log("Erreur lors de la tentative de suppression de l'utilisateur", err)
+        })
+
+    //res.render("agenda-liste", { users: annuaire})
+    res.redirect("/")
 })
 
 app.get("/apropos", (req, res) => {

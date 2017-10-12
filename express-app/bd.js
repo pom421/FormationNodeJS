@@ -43,3 +43,17 @@ exports.addUser = function addUser(user, cb) {
         }
     })
 }
+
+exports.deleteUser = function deleteUser(id, cb) {
+    connectDatabase()
+
+    connection.query("delete from users where id = ?", id, (err, nb) => {
+        connection.end()
+
+        if (err) {
+            cb(err)
+        } else {
+            cb(null, nb)
+        }
+    })
+}
